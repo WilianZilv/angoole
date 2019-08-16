@@ -10,6 +10,7 @@
 	"author": "Wilian Silva",
 	"license": "ISC",
 	"dependencies": {
+		"dotenv": "^8.0.0",
 		"express": "^4.17.1",
 		"nodemon": "^1.19.1"
 	}
