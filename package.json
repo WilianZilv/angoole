@@ -1,0 +1,16 @@
+{
+	"name": "angoole",
+	"version": "0.0.1",
+	"description": "Google bridge for Facebook Messenger",
+	"main": "index.js",
+	"scripts": {
+		"test": "npm -v",
+		"start": "nodemon index.js"
+	},
+	"author": "Wilian Silva",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1",
+		"nodemon": "^1.19.1"
+	}
+}
