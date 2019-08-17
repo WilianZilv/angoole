@@ -24,14 +24,14 @@ router.post('/', ({ body }, res) => {
 	if (object === 'page') {
 		for (const entry of entries) {
 			const { sender, message, postback } = entry.messaging[0]
-			if (postback) {
-				messageHandler(
-					{ recipient: sender.id, message: postback },
-					true
-				)
-			} else {
-				messageHandler({ recipient: sender.id, message: message.text })
-			}
+
+			messageHandler(
+				{
+					recipient: sender.id,
+					message: postback ? postback : message.text
+				},
+				!!postback
+			)
 		}
 		res.status(200).send('EVENT_RECEIVED')
 	} else {
