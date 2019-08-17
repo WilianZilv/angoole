@@ -21,9 +21,7 @@ module.exports = ({ recipient, message }, postback = false) => {
 				messenger.send('Estou enviando o arquivo 🙂')
 				return messenger.sendFile(null, 'file', file)
 			})
-			.then(() => {
-				fs.remove(path)
-			})
+			.then(() => fs.remove(path))
 			.catch(err => {
 				console.log(err)
 				messenger.send(

@@ -17,6 +17,6 @@
 		"google-it": "^1.2.1",
 		"node-fetch": "^2.6.0",
 		"nodemon": "^1.19.1",
-		"pdf-puppeteer": "^1.1.8"
+		"url-to-image": "^1.0.0"
 	}
 }
