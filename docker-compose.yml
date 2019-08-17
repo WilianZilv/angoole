@@ -1,0 +1,11 @@
+version: "2"
+services:
+    app:
+        container_name: app
+        restart: always
+        build: .
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/usr/app
+            - /usr/app/node_modules
