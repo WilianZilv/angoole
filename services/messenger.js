@@ -55,7 +55,6 @@ class Messenger {
 			'file',
 			stream || fs.createReadStream(__publicdir + '/' + file)
 		)
-		console.log(body)
 		return await fetch(this.messages, {
 			method: 'POST',
 			body

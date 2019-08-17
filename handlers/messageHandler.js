@@ -17,9 +17,9 @@ module.exports = ({ recipient, message }, postback = false) => {
 		const path = `${__publicdir}\\${recipient}\\${title}`
 
 		webtopdf(path, payload)
-			.then(file => {
+			.then(stream => {
 				messenger.send('Estou enviando o arquivo 🙂')
-				return messenger.sendFile(null, 'file', file)
+				return messenger.sendFile(null, 'file', stream)
 			})
 			.then(() => fs.remove(path))
 			.catch(err => {
