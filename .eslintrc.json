@@ -1,7 +1,6 @@
 {
 	"env": {
-		"browser": true,
-		"commonjs": true,
+		"node": true,
 		"es6": true
 	},
 	"extends": "eslint:recommended",
@@ -11,9 +10,6 @@
 	},
 	"parserOptions": {
 		"sourceType": "module",
-		"ecmaFeatures": {
-			"jsx": true
-		},
 		"ecmaVersion": 2018
 	},
 	"rules": {

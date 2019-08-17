@@ -1,13 +1,12 @@
 const Messenger = require('../services/messenger')
 
-const messages = ({ recipient, message }) => {
+module.exports = ({ recipient, message }) => {
 	const messenger = new Messenger(recipient)
 
 	if (message == 'image') {
-		messenger.sendImage('lisa.png')
+		messenger.sendAttachment('lisa.png')
 		return
 	}
 
 	messenger.send(`Oi, você me mandou: ${message}?`)
 }
-module.exports = messages

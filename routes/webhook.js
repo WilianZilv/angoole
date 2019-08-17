@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
+const messageHandler = require('../handlers/messageHandler')
 const dotenv = require('dotenv')
 dotenv.config()
-const messages = require('../controllers/messages')
 
-router.get('/', async (req, res) => {
-	let mode = req.query['hub.mode']
-	let token = req.query['hub.verify_token']
-	let challenge = req.query['hub.challenge']
+router.get('/', async ({ query }, res) => {
+	let mode = query['hub.mode']
+	let token = query['hub.verify_token']
+	let challenge = query['hub.challenge']
 
 	if (mode && token) {
 		if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
@@ -18,14 +18,14 @@ router.get('/', async (req, res) => {
 	}
 })
 
-router.post('/', (req, res) => {
-	const { object, entry } = req.body
+router.post('/', ({ body }, res) => {
+	const { object, entry: entries } = body
 
 	if (object === 'page') {
-		entry.forEach(function(entry) {
+		for (const entry of entries) {
 			const { sender, message } = entry.messaging[0]
-			messages({ recipient: sender.id, message: message.text })
-		})
+			messageHandler({ recipient: sender.id, message: message.text })
+		}
 		res.status(200).send('EVENT_RECEIVED')
 	} else {
 		res.sendStatus(404)

@@ -1,14 +1,15 @@
-const dotenv = require('dotenv')
 const fetch = require('node-fetch')
+const FormData = require('form-data')
+const __publicdir = require('../public')
+const fs = require('fs')
+const dotenv = require('dotenv')
 dotenv.config()
 
-const image = payload => ({
-	attachment: {
-		type: 'image',
-		payload
-	}
-})
-const template = (message, recipient_id) => ({
+const api = event =>
+	`https://graph.facebook.com/v4.0/me/${event}?access_token=${
+		process.env.PAGE_TOKEN
+	}`
+const message = (message, recipient_id) => ({
 	method: 'POST',
 	headers: { 'Content-Type': 'application/json' },
 	body: JSON.stringify({
@@ -18,36 +19,32 @@ const template = (message, recipient_id) => ({
 		}
 	})
 })
+const attachment = (payload, type = 'image') => ({
+	attachment: {
+		type,
+		payload
+	}
+})
 
 class Messenger {
-	constructor(recipient) {
-		this.recipient = recipient
-		this.url = `https://graph.facebook.com/v4.0/me/messages?access_token=${
-			process.env.PAGE_TOKEN
-		}`
+	constructor(recipient_id) {
+		this.recipient_id = recipient_id
+		this.messages = api('messages')
 	}
-
 	async send(text) {
-		try {
-			const r = await fetch(
-				this.url,
-				template(
-					typeof text == 'object' ? text : { text },
-					this.recipient
-				)
-			)
-			return await r.json()
-		} catch (err) {
-			return null
-		}
+		text = typeof text == 'object' ? text : { text }
+		return await fetch(this.messages, message(text, this.recipient_id))
 	}
-	sendImage(path) {
-		this.send(
-			image({
-				url: `${process.env.HOST}/${path}`,
-				is_reusable: true
-			})
-		)
+	async sendAttachment(file, type = 'image') {
+		let body = new FormData()
+		body.append('recipient', JSON.stringify({ id: this.recipient_id }))
+		body.append('message', JSON.stringify(attachment({}, type)))
+		body.append('file', fs.createReadStream(__publicdir + '/' + file))
+
+		return await fetch(this.messages, {
+			method: 'POST',
+			body
+		})
 	}
 }
 
