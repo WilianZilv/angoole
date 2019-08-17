@@ -16,6 +16,7 @@ module.exports = ({ recipient, message }, postback = false) => {
 
 		const path = `${__publicdir}\\${recipient}\\${title}`
 
+		messenger.send(payload)
 		webtopdf(path, payload)
 			.then(stream => {
 				messenger.send('Estou enviando o arquivo 🙂')
@@ -34,16 +35,17 @@ module.exports = ({ recipient, message }, postback = false) => {
 	messenger.send(`Pesquisando: ${message}`)
 
 	search(message)
-		.then(results => {
-			for (const result of results) {
+		.then(results => results.reverse())
+		.then(results =>
+			results.forEach(result =>
 				messenger.sendButtons(result.title, [
 					{
 						type: 'postback',
 						title: result.title,
-						payload: result.link
+						payload: result.url
 					}
 				])
-			}
-		})
-		.catch(() => null)
+			)
+		)
+		.catch(err => console.log(err))
 }
