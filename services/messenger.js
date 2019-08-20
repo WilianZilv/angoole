@@ -1,9 +1,6 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
-const __publicdir = require('../public')
 const fs = require('fs-jetpack')
-const dotenv = require('dotenv')
-dotenv.config()
 
 const api = event =>
     `https://graph.facebook.com/v4.0/me/${event}?access_token=${
@@ -47,14 +44,11 @@ class Messenger {
             )
         )
     }
-    async sendFile(file, type = 'file', stream = null) {
+    async sendFile(path, type = 'file') {
         let body = new FormData()
         body.append('recipient', JSON.stringify({ id: this.recipient_id }))
         body.append('message', JSON.stringify(attachment({}, type)))
-        body.append(
-            'file',
-            stream || fs.createReadStream(__publicdir + '/' + file)
-        )
+        body.append('file', fs.createReadStream(path))
         return await fetch(this.messages, {
             method: 'POST',
             body
