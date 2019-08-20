@@ -5,9 +5,9 @@ const postbackHandler = require('../handlers/postbackHandler')
 const messageHandler = require('../handlers/messageHandler')
 
 router.get('/', async ({ query }, res) => {
-    let mode = query['hub.mode']
-    let token = query['hub.verify_token']
-    let challenge = query['hub.challenge']
+    const mode = query['hub.mode']
+    const token = query['hub.verify_token']
+    const challenge = query['hub.challenge']
 
     if (mode && token) {
         if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {

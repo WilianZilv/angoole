@@ -1,13 +1,14 @@
 const webtopdf = require('../services/webtopdf')
 const fs = require('fs-jetpack')
-const __publicdir = require('../public')
+const publicdir = require('../public')
+const os_path = require('path')
 
 module.exports = (messenger, { title, payload }) => {
     messenger.send('Estou abrindo a página para você, aguarde...')
 
     title = title.replace(/[^a-z0-9]/gi, '') + '.pdf'
 
-    const path = `${__publicdir}/${messenger.recipient_id}/${title}`
+    const path = os_path.join(publicdir, messenger.recipient_id, title)
 
     webtopdf(path, payload)
         .then(() => {
