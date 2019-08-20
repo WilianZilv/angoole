@@ -13,7 +13,7 @@ module.exports = (messenger, { title, payload }) => {
     webtopdf(path, payload)
         .then(() => {
             messenger.send('Estou enviando o arquivo 🙂')
-            return messenger.sendFile(path, 'file')
+            return messenger.sendFile(path, 'image')
         })
         .then(() => fs.remove(path))
         .catch(() =>
