@@ -6,7 +6,7 @@ const os_path = require('path')
 module.exports = (messenger, { title, payload }) => {
     messenger.send('Estou abrindo a página para você, aguarde...')
 
-    title = title.replace(/[^a-z0-9]/gi, '') + '.pdf'
+    title = title.replace(/[^a-z0-9]/gi, '') + '.png'
 
     const path = os_path.join(publicdir, messenger.recipient_id, title)
 
