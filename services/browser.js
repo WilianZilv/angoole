@@ -13,7 +13,7 @@ class Browser {
             await page.goto(link, {
                 waitUntil: 'networkidle2'
             })
-            await page.setViewport({ width: 1280, height: 720 })
+            await page.setViewport({ width: 860, height: 480 })
             await page.screenshot({ path, fullPage: true })
             await page.close()
         } catch (err) {

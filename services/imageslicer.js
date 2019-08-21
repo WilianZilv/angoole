@@ -7,8 +7,8 @@ imageToSlices.configure({
     }
 })
 
-const maxHeight = 4096
-const offset = 480
+const maxHeight = 2048
+const offset = 320
 
 module.exports = async path => {
     let lines = []
