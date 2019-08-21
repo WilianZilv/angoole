@@ -16,9 +16,6 @@ module.exports = (browser, messenger, { title, payload }) => {
     browser
         .screenshot(filePath, payload)
         .then(() => {
-            messenger.send(
-                'Consegui abrir a página! Aguarde mais um pouquinho.'
-            )
             const { height } = sizeOf(filePath)
             if (height > process.env.SLICE_HEIGHT_LIMIT) {
                 messenger.send(
@@ -26,6 +23,9 @@ module.exports = (browser, messenger, { title, payload }) => {
                 )
                 return filePath
             }
+            messenger.send(
+                'Consegui abrir a página! Aguarde mais um pouquinho.'
+            )
             return slice(filePath)
         })
         .then(async result => {
