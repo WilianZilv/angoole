@@ -1,6 +1,9 @@
 const search = require('../services/google')
 
 module.exports = (messenger, { text }) => {
+    if (!text) {
+        return
+    }
     messenger.send(`Pesquisando: ${text}`)
 
     search(text)
@@ -21,6 +24,8 @@ module.exports = (messenger, { text }) => {
             }
         })
         .catch(() =>
-            messenger.send('Algo deu errado e eu não sei o que houve 😞')
+            messenger.send(
+                'Não estou conseguindo fazer pesquisas no momento, tente novamente em outro momento 😞'
+            )
         )
 }
