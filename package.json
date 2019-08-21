@@ -10,14 +10,14 @@
     "author": "Wilian Silva",
     "license": "ISC",
     "dependencies": {
-        "dotenv": "^8.0.0",
-        "express": "^4.17.1",
-        "form-data": "^2.5.0",
-        "fs-jetpack": "^2.2.2",
-        "node-fetch": "^2.6.0",
-        "nodemon": "^1.19.1",
-        "request": "^2.88.0",
-        "serp": "^2.0.6",
-        "url-to-image": "^1.0.0"
+        "dotenv": "8.0.0",
+        "express": "4.17.1",
+        "form-data": "2.5.0",
+        "fs-jetpack": "2.2.2",
+        "node-fetch": "2.6.0",
+        "nodemon": "1.19.1",
+        "request": "2.88.0",
+        "serp": "2.0.6",
+        "url-to-image": "1.0.0"
     }
 }
