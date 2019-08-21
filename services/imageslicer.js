@@ -32,23 +32,28 @@ module.exports = async path => {
     const saveToDir = path.split('.png')[0]
 
     fs.dir(saveToDir)
-    return new Promise(resolve => {
-        imageToSlices(
-            path,
-            lines,
-            [],
-            {
-                saveToDir
-            },
-            () => {
-                lines.push(0)
-                resolve({
-                    folder: saveToDir,
-                    files: lines.map(
-                        (line, i) => `${saveToDir}/section-${i + 1}.png`
-                    )
-                })
-            }
-        )
+    return new Promise((resolve, reject) => {
+        try {
+            imageToSlices(
+                path,
+                lines,
+                [],
+                {
+                    saveToDir
+                },
+                () => {
+                    lines.push(0)
+                    resolve({
+                        folder: saveToDir,
+                        files: lines.map(
+                            (line, i) => `${saveToDir}/section-${i + 1}.png`
+                        )
+                    })
+                }
+            )
+        } catch (err) {
+            console.log(err)
+            reject(err)
+        }
     })
 }
