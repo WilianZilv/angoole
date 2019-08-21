@@ -16,8 +16,8 @@
         "fs-jetpack": "2.2.2",
         "node-fetch": "2.6.0",
         "nodemon": "1.19.1",
+        "puppeteer": "1.19.0",
         "request": "2.88.0",
-        "serp": "2.0.6",
-        "url-to-image": "1.0.0"
+        "serp": "2.0.6"
     }
 }

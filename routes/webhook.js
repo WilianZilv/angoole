@@ -3,6 +3,7 @@ const router = express.Router()
 const Messenger = require('../services/messenger')
 const postbackHandler = require('../handlers/postbackHandler')
 const messageHandler = require('../handlers/messageHandler')
+const browser = require('../services/puppeteer')
 
 router.get('/', async ({ query }, res) => {
     const mode = query['hub.mode']
@@ -28,7 +29,7 @@ router.post('/', ({ body }, res) => {
             const messenger = new Messenger(sender.id)
 
             if (postback) {
-                postbackHandler(messenger, postback)
+                postbackHandler(browser, messenger, postback)
             } else {
                 messageHandler(messenger, message)
             }
