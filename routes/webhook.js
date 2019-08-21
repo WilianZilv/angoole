@@ -4,6 +4,7 @@ const Messenger = require('../services/messenger')
 const postbackHandler = require('../handlers/postbackHandler')
 const messageHandler = require('../handlers/messageHandler')
 const browser = require('../services/browser')
+const { instance: sessions } = require('../services/sessions')
 
 router.get('/', async ({ query }, res) => {
     const mode = query['hub.mode']
@@ -28,10 +29,12 @@ router.post('/', ({ body }, res) => {
 
             const messenger = new Messenger(sender.id)
 
-            if (postback) {
-                postbackHandler(browser, messenger, postback)
-            } else {
-                messageHandler(messenger, message)
+            if (sessions.start(sender.id)) {
+                if (postback) {
+                    postbackHandler(browser, messenger, postback)
+                } else {
+                    messageHandler(messenger, message)
+                }
             }
         }
         res.status(200).send('EVENT_RECEIVED')

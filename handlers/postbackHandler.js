@@ -1,6 +1,7 @@
 const fs = require('fs-jetpack')
 const publicdir = require('../public')
 const os_path = require('path')
+const slice = require('../services/imageslicer')
 
 module.exports = (browser, messenger, { title, payload }) => {
     messenger.send('Estou abrindo a página para você, aguarde...')
@@ -13,6 +14,12 @@ module.exports = (browser, messenger, { title, payload }) => {
 
     browser
         .screenshot(filePath, payload)
+        .then(() => {
+            messenger.send(
+                'Consegui abrir a página! Aguarde mais um pouquinho.'
+            )
+            return slice(filePath)
+        })
         .then(async result => {
             if (typeof result == 'object') {
                 messenger.send(
@@ -21,25 +28,20 @@ module.exports = (browser, messenger, { title, payload }) => {
                 const { files } = result
 
                 for (const file of files) {
-                    try {
-                        await messenger.sendFile(file, 'image')
-                    } catch (err) {
-                        messenger.send(
-                            'Não consegui enviar uma parte, vou tentar de novo, se eu não conseguir, vou pular para a próxima, tá bom?'
-                        )
-                        await messenger.sendFile(file, 'image')
-                    }
+                    await messenger
+                        .sendFile(file, 'image')
+                        .catch(err => console.log(err))
                 }
-                messenger.send('Prontinho 🙂')
+                messenger.send('Prontinho 🙂', true)
             } else {
-                messenger.send('Estou enviando a imagem 🙂')
-                await messenger.sendFile(filePath, 'image')
+                await messenger.sendFile(filePath, 'image', true)
             }
             fs.dir(recipientPath).remove()
         })
         .catch(() =>
             messenger.send(
-                'Eu tive um problema para abrir esta página, desculpe 😢'
+                'Eu tive um problema para abrir esta página, desculpe 😢',
+                true
             )
         )
 }

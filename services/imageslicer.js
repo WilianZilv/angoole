@@ -1,6 +1,5 @@
 const fs = require('fs-jetpack')
 const sizeOf = require('image-size')
-
 const imageToSlices = require('image-to-slices')
 imageToSlices.configure({
     clipperOptions: {
@@ -46,7 +45,7 @@ module.exports = async path => {
                 resolve({
                     folder: saveToDir,
                     files: lines.map(
-                        (line, i) => `${saveToDir}\\section-${i + 1}.png`
+                        (line, i) => `${saveToDir}/section-${i + 1}.png`
                     )
                 })
             }
