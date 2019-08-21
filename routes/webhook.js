@@ -3,7 +3,7 @@ const router = express.Router()
 const Messenger = require('../services/messenger')
 const postbackHandler = require('../handlers/postbackHandler')
 const messageHandler = require('../handlers/messageHandler')
-const browser = require('../services/puppeteer')
+const browser = require('../services/browser')
 
 router.get('/', async ({ query }, res) => {
     const mode = query['hub.mode']

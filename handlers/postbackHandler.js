@@ -7,14 +7,35 @@ module.exports = (browser, messenger, { title, payload }) => {
 
     title = title.replace(/[^a-z0-9]/gi, '') + '.png'
 
-    fs.dir(os_path.join(publicdir, messenger.recipient_id))
-    const path = os_path.join(publicdir, messenger.recipient_id, title)
+    const recipientPath = os_path.join(publicdir, messenger.recipient_id)
+    const filePath = os_path.join(recipientPath, title)
+    fs.dir(recipientPath)
 
     browser
-        .screenshot(path, payload)
-        .then(() => {
-            messenger.send('Estou enviando a imagem 🙂')
-            messenger.sendFile(path, 'image')
+        .screenshot(filePath, payload)
+        .then(async result => {
+            if (typeof result == 'object') {
+                messenger.send(
+                    'A página é muito grande, então vou enviá-la em partes, se algo estiver cortado, me desculpe, estou fazendo o máximo que posso no momento.'
+                )
+                const { files } = result
+
+                for (const file of files) {
+                    try {
+                        await messenger.sendFile(file, 'image')
+                    } catch (err) {
+                        messenger.send(
+                            'Não consegui enviar uma parte, vou tentar de novo, se eu não conseguir, vou pular para a próxima, tá bom?'
+                        )
+                        await messenger.sendFile(file, 'image')
+                    }
+                }
+                messenger.send('Prontinho 🙂')
+            } else {
+                messenger.send('Estou enviando a imagem 🙂')
+                await messenger.sendFile(filePath, 'image')
+            }
+            fs.dir(recipientPath).remove()
         })
         .catch(() =>
             messenger.send(
