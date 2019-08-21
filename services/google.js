@@ -6,7 +6,8 @@ module.exports = async search =>
         qs: {
             q: search,
             filter: 0,
-            pws: 0
+            pws: 0,
+            safe: 'active'
         },
         num: 15
     })
