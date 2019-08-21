@@ -2,7 +2,7 @@ const serp = require('serp')
 
 module.exports = async search =>
     serp.search({
-        host: 'google.be',
+        host: 'google.pt',
         qs: {
             q: search,
             filter: 0,
