@@ -4,10 +4,16 @@ module.exports = (messenger, { text }) => {
     if (!text) {
         return
     }
+    if (text.toLowerCase().includes('youtube')) {
+        messenger.send('Conteúdos do Youtube não podem ser visualizados 😞')
+        return
+    }
     messenger.send(`Pesquisando: ${text}`)
 
     search(text)
-        .then(results => results.reverse())
+        .then(results =>
+            results.reverse().filter(({ url }) => !url.includes('youtube'))
+        )
         .then(results => {
             if (results.length > 0) {
                 results.forEach(result =>
