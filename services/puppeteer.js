@@ -2,7 +2,9 @@ const puppeteer = require('puppeteer')
 
 class Browser {
     constructor() {
-        puppeteer.launch().then(browser => (this.browser = browser))
+        puppeteer
+            .launch({ args: ['--no-sandbox'] })
+            .then(browser => (this.browser = browser))
     }
     async screenshot(path, link) {
         try {

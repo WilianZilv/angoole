@@ -14,7 +14,7 @@ module.exports = (browser, messenger, { title, payload }) => {
         .screenshot(path, payload)
         .then(() => {
             messenger.send('Estou enviando a imagem 🙂')
-            messenger.sendFile(path, 'image').then(() => fs.remove(path))
+            messenger.sendFile(path, 'image')
         })
         .catch(() =>
             messenger.send(
