@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 const fs = require('fs-jetpack')
-const { Sessions } = require('./sessions')
+const Sessions = require('./sessions')
 
 const api = event =>
     `https://graph.facebook.com/v4.0/me/${event}?access_token=${
@@ -30,10 +30,13 @@ class Messenger {
         this.messages = api('messages')
     }
     async send(text, finish = false) {
-        if (finish) this.finishSession()
-
         text = typeof text == 'object' ? text : { text }
-        return await fetch(this.messages, message(text, this.recipient_id))
+        await fetch(this.messages, message(text, this.recipient_id)).catch(
+            err => {
+                throw new Error(err)
+            }
+        )
+        if (finish) this.finishSession()
     }
     async sendButtons(text, buttons) {
         return await this.send(
@@ -48,17 +51,18 @@ class Messenger {
         )
     }
     async sendFile(path, type = 'file', finish = false) {
-        if (finish) this.finishSession()
-
         let body = new FormData()
         body.append('recipient', JSON.stringify({ id: this.recipient_id }))
         body.append('message', JSON.stringify(attachment({}, type)))
         body.append('file', fs.createReadStream(path))
 
-        return await fetch(this.messages, {
+        await fetch(this.messages, {
             method: 'POST',
             body
+        }).catch(err => {
+            throw new Error(err)
         })
+        if (finish) this.finishSession()
     }
     finishSession() {
         Sessions.instance.finish(this.recipient_id)

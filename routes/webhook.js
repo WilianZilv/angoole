@@ -4,7 +4,10 @@ const Messenger = require('../services/messenger')
 const postbackHandler = require('../handlers/postbackHandler')
 const messageHandler = require('../handlers/messageHandler')
 const browser = require('../services/browser')
-const { instance: sessions } = require('../services/sessions')
+const Sessions = require('../services/sessions')
+
+const sessions = new Sessions()
+Sessions.instance = sessions
 
 router.get('/', async ({ query }, res) => {
     const mode = query['hub.mode']

@@ -1,8 +1,6 @@
 const fs = require('fs-jetpack')
 const publicdir = require('../public')
 const os_path = require('path')
-const slice = require('../services/imageslicer')
-const sizeOf = require('image-size')
 
 module.exports = (browser, messenger, { title, payload }) => {
     messenger.send('Estou abrindo a página para você, aguarde...')
@@ -15,37 +13,23 @@ module.exports = (browser, messenger, { title, payload }) => {
 
     browser
         .screenshot(filePath, payload)
-        .then(() => {
-            const { height } = sizeOf(filePath)
-            if (height > process.env.SLICE_HEIGHT_LIMIT) {
+        .then(async files => {
+            const fileCount = files.length
+            if (fileCount > 1) {
                 messenger.send(
-                    'A página é grande demais para meu processadorzinho, não vou conseguir recortar para você 😥'
+                    `A página é muito grande, estou enviando em ${fileCount} partes para você conseguir ler o conteúdo 😎.`
                 )
-                return filePath
+            } else {
+                messenger.send('Estou enviando ✌')
             }
-            messenger.send(
-                'Consegui abrir a página! Aguarde mais um pouquinho.'
-            )
-            return slice(filePath)
-        })
-        .then(async result => {
-            if (result) {
-                if (typeof result == 'object') {
-                    messenger.send(
-                        'A página é muito grande, então vou enviá-la em partes, se algo estiver cortado, me desculpe, estou fazendo o máximo que posso no momento.'
-                    )
-                    const { files } = result
 
-                    for (const file of files) {
-                        await messenger
-                            .sendFile(file, 'image')
-                            .catch(err => console.log(err))
-                    }
-                    messenger.send('Prontinho 🙂', true)
-                } else {
-                    await messenger.sendFile(filePath, 'image', true)
-                }
+            for (const file of files) {
+                await messenger
+                    .sendFile(file, 'image')
+                    .catch(err => console.log(err))
             }
+            messenger.send('Prontinho 🙂', true)
+
             fs.dir(recipientPath).remove()
         })
         .catch(() =>

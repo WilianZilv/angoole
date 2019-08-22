@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer')
+const pagetoslices = require('./pagetoslices')
 
 class Browser {
     constructor() {
@@ -13,9 +14,11 @@ class Browser {
             await page.goto(link, {
                 waitUntil: 'networkidle2'
             })
-            await page.setViewport({ width: 1024, height: 640 })
-            await page.screenshot({ path, fullPage: true })
+
+            await page.setViewport({ width: 1280, height: 4096 })
+            const files = await pagetoslices(page, path)
             await page.close()
+            return files
         } catch (err) {
             console.log(err)
             throw new Error(err)

@@ -1,13 +1,28 @@
 const search = require('../services/google')
 
+const read = (msg, words) => {
+    msg = msg.toLowerCase()
+    for (const word of words) if (word == msg) return true
+    return false
+}
 module.exports = (messenger, { text }) => {
-    if (!text) messenger.finishSession()
+    if (!text) return messenger.finishSession()
 
-    if (text.toLowerCase().includes('youtube'))
-        messenger.send(
+    const msg = text.toLowerCase()
+    if (msg.includes('youtube'))
+        return messenger.send(
             'Conteúdos do Youtube não podem ser visualizados 😞',
             true
         )
+    if (read(msg, ['obrigado', 'obrigado!']))
+        return messenger.send('Não há de quê ❤️️', true)
+
+    if (read(msg, ['oi', 'olá']))
+        return messenger
+            .send('Oi! 😃', true)
+            .then(() =>
+                messenger.send('Me envie algo que você queira pesquisar')
+            )
 
     messenger.send(`Pesquisando: ${text}`)
 

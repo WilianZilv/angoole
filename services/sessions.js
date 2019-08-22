@@ -1,4 +1,4 @@
-class Sessions {
+module.exports = class Sessions {
     constructor() {
         this.sessions = {}
     }
@@ -22,8 +22,4 @@ class Sessions {
         }
     }
 }
-const instance = new Sessions()
-Sessions.instance = instance
 
-module.exports.instance = instance
-module.exports.Sessions = Sessions
