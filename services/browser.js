@@ -4,7 +4,7 @@ const pagetoslices = require('./pagetoslices')
 class Browser {
     constructor() {
         puppeteer
-            .launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
+            .launch({ args: ['--no-sandbox'] })
             .then(browser => (this.browser = browser))
             .catch(error => console.log(error))
     }
