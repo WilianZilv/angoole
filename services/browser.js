@@ -6,6 +6,7 @@ class Browser {
         puppeteer
             .launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
             .then(browser => (this.browser = browser))
+            .catch(error => console.log(error))
     }
 
     async screenshot(path, link) {
