@@ -5,7 +5,7 @@ services:
         restart: always
         build: .
         ports:
-            - "80:80"
+            - "$PORT:$PORT"
         volumes:
             - ./:/usr/app
             - /usr/app/node_modules
