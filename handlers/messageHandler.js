@@ -39,7 +39,7 @@ module.exports = (messenger, { text }) => {
                     const button = messenger.sendButtons(result.title, [
                         {
                             type: "postback",
-                            title: result.title,
+                            title: "Visualizar",
                             payload: result.link
                         }
                     ]);

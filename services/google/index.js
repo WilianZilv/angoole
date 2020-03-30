@@ -1,4 +1,4 @@
-const google = require("google-it");
+const google = require("./lib");
 
 module.exports = async search =>
     google({
