@@ -1,13 +1,7 @@
-const serp = require('serp')
+const google = require("google-it");
 
 module.exports = async search =>
-    serp.search({
-        host: 'google.pt',
-        qs: {
-            q: search,
-            filter: 0,
-            pws: 0,
-            safe: 'active'
-        },
-        num: 15
-    })
+    google({
+        query: search + "&safe=active",
+        limit: 10
+    });
